@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>Vehiculos | Consulta Vehicular UCV</title>
+
+    <link rel="shortcut icon" href="/assest/img/Escudo-ucv.webp" type="image/x-icon"/>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!--DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
+    <!--jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!--DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+
+        <!-- Estilo para enlace activo -->
+        <style>
+            .active-link {
+                background-color: #1e40af;   /* bg-blue-800 */
+                color: white;
+                padding-left: 1rem;          /* pl-4 */
+                border-left: 4px solid white; /* border-l-4 border-white */
+            }
+        </style>
+</head>
+
+<body class="bg-gray-100">
+    <!-- NAVBAR -->
+    <nav class="bg-white shadow flex items-center justify-between px-6 py-3 relative z-50">
+        <!-- Logo grande -->
+        <div class="flex items-center space-x-4">
+            <img src="./assest/img/logoucv.webp" alt="Logo UCV" class="h-14 w-auto" />
+        </div>
+
+        <!-- Menú central -->
+        <div class="flex-1 flex justify-center">
+            <ul class="hidden md:flex space-x-6 text-blue-900 font-semibold text-lg">
+                <li><a href="index.html" class="hover:text-red-600">Inicio</a></li>
+                <li><a href="registrar.html" class="hover:text-red-600">Registrar</a></li>
+                <li><a href="EscanearCodigo.html" class="hover:text-red-600">Escanear</a></li>
+                <li><a href="#" class="hover:text-red-600">Reportes</a></li>
+            </ul>
+        </div>
+
+        <!-- Íconos derecha -->
+        <div class="flex items-center space-x-4 text-blue-900">
+            <div class="hidden sm:flex items-center space-x-4">
+                <button class="text-2xl hover:text-red-600">
+                    <i class="fas fa-bell w-6 h-6"></i>
+                </button>
+                <div class="relative inline-block text-left">
+
+                    <!-- Botón del ícono de usuario -->
+                    <button id="userMenuButton" class="hover:text-red-600 font-medium flex items-center space-x-1 focus:outline-none">
+                      <i class="fas fa-user w-5 h-5"></i>
+                    </button>
+                  
+                    <!-- Dropdown oculto inicialmente -->
+                    <div id="userDropdown" class="hidden absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                      <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Perfil</a>
+                      <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Configuración</a>
+                      <a href="IniciarSesion.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Iniciar sesión</a>
+                      <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Cerrar sesión</a>
+                    </div>
+                  </div>
+            </div>
+        </div>
+
+        <!-- Menú hamburguesa para móvil -->
+        <div class="sm:hidden">
+            <button id="menu-toggle" class="text-blue-900">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Menú desplegable para móvil -->
+    <div id="mobile-menu" class="sm:hidden hidden bg-white shadow w-full absolute top-20 left-0 z-40">
+        <ul class="space-y-4 text-center py-4 text-blue-900 font-semibold text-lg">
+            <li><a href="index.html" class="hover:text-red-600 flex justify-center items-center gap-2"><i class="fas fa-home"></i> Inicio</a></li>
+            <li><a href="registrar.html" class="hover:text-red-600 flex justify-center items-center gap-2"><i class="fas fa-file-alt"></i> Registrar</a></li>
+            <li><a href="EscanearCodigo.html" class="hover:text-red-600 flex justify-center items-center gap-2"><i class="fas fa-qrcode"></i> Escanear</a></li>
+            <li><a href="#" class="hover:text-red-600 flex justify-center items-center gap-2"><i class="fas fa-chart-bar"></i> Reportes</a></li>
+            <li><a href="#" class="hover:text-red-600 flex justify-center items-center gap-2"><i class="fas fa-bell"></i> Notificaciones</a></li>
+            <li><a href="IniciarSesion.html" class="hover:text-red-600 flex justify-center items-center gap-2"><i class="fas fa-user"></i> Iniciar sesión</a></li>
+        </ul>
+    </div>
+
+    <!-- LAYOUT -->
+    <div class="flex h-screen overflow-hidden">
+
+        <!-- SIDEBAR -->
+        <aside class="bg-blue-900 text-white w-64 hidden md:flex flex-col p-4 space-y-2">
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 bg-white rounded-full mx-auto"></div>
+                <p class="mt-2 font-bold">ADMIN</p>
+                <p class="text-sm text-gray-200">Rol ADMINISTRADOR</p>
+            </div>
+
+            <!-- Registro de Alumnos -->
+            <a href="RegistroDeAlumnos.html" class="flex items-center px-4 py-2 rounded hover:bg-white hover:text-blue-900">
+                <i class="fas fa-user-graduate w-5 h-5 mr-2"></i>
+                Registro de Alumnos
+            </a>
+
+            <!-- Documentos -->
+            <a href="documentos.html" class="flex items-center px-4 py-2 rounded hover:bg-white hover:text-blue-900">
+                <i class="fas fa-file-alt w-5 h-5 mr-2"></i>
+                Documentos
+            </a>
+
+            <!-- Vehículos -->
+            <a href="vehiculos.html" class="flex items-center px-4 py-2 rounded hover:bg-white hover:text-blue-900">
+                <i class="fas fa-car-side w-5 h-5 mr-2"></i>
+                Vehículos
+            </a>
+
+            <!-- Escanear Pase -->
+            <a href="EscanearCodigo.html" class="flex items-center px-4 py-2 rounded hover:bg-white hover:text-blue-900">
+                <i class="fas fa-qrcode w-5 h-5 mr-2"></i>
+                Escanear Pase
+            </a>
+
+            <!-- Consultar Pases -->
+            <a href="consultarPases.html" class="flex items-center px-4 py-2 rounded hover:bg-white hover:text-blue-900">
+                <i class="fas fa-id-card w-5 h-5 mr-2"></i>
+                Consultar Pases
+            </a>
+
+            <!-- Historial -->
+            <a href="historial.html" class="flex items-center px-4 py-2 rounded hover:bg-white hover:text-blue-900">
+                <i class="fas fa-clock w-5 h-5 mr-2"></i>
+                Historial
+            </a>
+        </aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <div class="flex-1 p-6 flex flex-col h-full overflow-hidden">
+            <h2 class="text-2xl font-semibold mb-4">
+                <i class="fas fa-car w-6 h-6 mr-2"></i> Registro de Vehículos
+              </h2>
+              
+            <!-- Botón para abrir el Modal -->
+            <div class="flex justify-end mt-4">
+                <button onclick="abrirModal()"
+                    class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded shadow font-semibold transition">
+                    Agregar Vehículo
+                </button>
+            </div>
+
+<!-- Modal -->
+<div id="modalVehiculo" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+  <div class="bg-white rounded-lg shadow-lg w-full max-w-2xl p-6">
+    <h2 class="text-xl font-semibold mb-4 text-center text-blue-600">Registrar Vehículo</h2>
+    <div class="space-y-4">
+      <div>
+        <label for="modeloInput" class="block mb-1 font-medium text-gray-700">Modelo</label>
+        <input id="modeloInput" type="text"
+          class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-400"
+          placeholder="Ej: Toyota Corolla">
+      </div>
+      <div>
+        <label for="marcaInput" class="block mb-1 font-medium text-gray-700">Marca</label>
+        <input id="marcaInput" type="text"
+          class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-400"
+          placeholder="Ej: Toyota">
+      </div>
+      <div>
+        <label for="colorInput" class="block mb-1 font-medium text-gray-700">Color</label>
+        <input id="colorInput" type="text"
+          class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-400"
+          placeholder="Ej: Rojo">
+      </div>
+      <div>
+        <label for="placaInput" class="block mb-1 font-medium text-gray-700">Número de Placa</label>
+        <input id="placaInput" type="text"
+          class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-400"
+          placeholder="Ej: ABC123">
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="flex justify-end space-x-3 mt-6">
+      <button onclick="cerrarModal()"
+        class="bg-gray-500 hover:bg-gray-600 text-white px-5 py-2 rounded shadow">Cancelar</button>
+      <button onclick="guardarVehiculo()"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded shadow">Guardar</button>
+    </div>
+  </div>
+</div>
+
+
+            <!-- Tabla -->
+        <div class="overflow-x-auto shadow rounded-lg border border-gray-200 mt-8">
+        <table id="vehiculosRegistrados" class="min-w-full text-sm text-left text-gray-700">
+            <thead class="bg-blue-900 text-white text-sm uppercase">
+            <tr>
+                <th class="px-6 py-3">N° de Placa</th>
+                <th class="px-6 py-3">Tipo de Vehículo</th>
+                <th class="px-6 py-3">Marca</th>
+                <th class="px-6 py-3">Opción</th>
+            </tr>
+            </thead>
+            <tbody id="tablaVehiculos" class="bg-white divide-y divide-gray-200">
+            <!-- Registros dinámicos aquí -->
+            </tbody>
+        </table>
+        </div>
+
+    <script src="/Js/menu-toggle.js"></script>
+    <script src="/Js/vehiculos.js"></script>
+    <script src="/Js/menuDropdown.js"></script>
+
+<script>
+  $(document).ready(function() {
+    $('#vehiculosRegistrados').DataTable({
+      language: {
+        url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+      }
+    });
+  });
+</script>
+</body>
+</html>

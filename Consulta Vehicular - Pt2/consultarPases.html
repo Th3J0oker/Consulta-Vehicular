@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+  <title>Consultar Pases | Consulta Vehicular UCV</title>
+
+  <link rel="shortcut icon" href="/assest/img/Escudo-ucv.webp" type="image/x-icon"/>
+
+  <!-- Tailwind & FontAwesome -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+
+  <!--DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
+  <!--jQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+  <!--DataTables JS -->
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+  <!-- Estilo para enlace activo -->
+  <style>
+    .active-link {
+      background-color: #1e40af;   /* bg-blue-800 */
+      color: white;
+      padding-left: 1rem;          /* pl-4 */
+      border-left: 4px solid white; /* border-l-4 border-white */
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+
+  <!-- NAVBAR -->
+  <nav class="bg-white shadow flex items-center justify-between px-6 py-3 relative z-50">
+    <!-- Logo -->
+    <div class="flex items-center space-x-4">
+      <img src="./assest/img/logoucv.webp" alt="Logo UCV" class="h-14 w-auto" />
+    </div>
+
+    <!-- Menú principal (desktop) -->
+    <div class="flex-1 flex justify-center">
+      <ul class="hidden md:flex space-x-6 text-blue-900 font-semibold text-lg">
+        <li><a href="index.html" class="hover:text-red-600">Inicio</a></li>
+        <li><a href="registrar.html" class="hover:text-red-600">Registrar</a></li>
+        <li><a href="EscanearCodigo.html" class="hover:text-red-600">Escanear</a></li>
+        <li><a href="#" class="hover:text-red-600">Reportes</a></li>
+      </ul>
+    </div>
+
+    <!-- Íconos derecha -->
+    <div class="flex items-center space-x-4 text-blue-900">
+      <div class="hidden sm:flex items-center space-x-4">
+
+        <button class="text-2xl hover:text-red-600">
+          <i class="fas fa-bell w-6 h-6"></i>
+        </button>
+
+
+        <div class="relative inline-block text-left">
+
+            <!-- Botón del ícono de usuario -->
+            <button id="userMenuButton" class="hover:text-red-600 font-medium flex items-center space-x-1 focus:outline-none">
+              <i class="fas fa-user w-5 h-5"></i>
+            </button>
+          
+            <!-- Dropdown oculto inicialmente -->
+            <div id="userDropdown" class="hidden absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Perfil</a>
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Configuración</a>
+              <a href="IniciarSesion.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Iniciar sesión</a>
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Cerrar sesión</a>
+            </div>
+          </div>
+      </div>
+    </div>
+
+    <!-- Menú móvil (hamburguesa) -->
+    <div class="sm:hidden">
+      <button id="menu-toggle" class="text-blue-900">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor" class="h-6 w-6">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Menú móvil desplegable -->
+  <div id="mobile-menu" class="sm:hidden hidden bg-white shadow w-full absolute top-20 left-0 z-40">
+    <ul class="space-y-4 text-center py-4 text-blue-900 font-semibold text-lg">
+      <li><a href="index.html" class="hover:text-red-600 flex justify-center items-center gap-2"><i class="fas fa-home"></i> Inicio</a></li>
+      <li><a href="registrar.html" class="hover:text-red-600 flex justify-center items-center gap-2"><i class="fas fa-file-alt"></i> Registrar</a></li>
+      <li><a href="EscanearCodigo.html" class="hover:text-red-600 flex justify-center items-center gap-2"><i class="fas fa-qrcode"></i> Escanear</a></li>
+      <li><a href="#" class="hover:text-red-600 flex justify-center items-center gap-2"><i class="fas fa-chart-bar"></i> Reportes</a></li>
+      <li><a href="#" class="hover:text-red-600 flex justify-center items-center gap-2"><i class="fas fa-bell"></i> Notificaciones</a></li>
+      <li><a href="IniciarSesion.html" class="hover:text-red-600 flex justify-center items-center gap-2"><i class="fas fa-user"></i> Iniciar sesión</a></li>
+    </ul>
+  </div>
+
+  <!-- LAYOUT -->
+  <div class="flex h-screen overflow-hidden">
+
+    <!-- SIDEBAR -->
+    <aside class="bg-blue-900 text-white w-64 hidden md:flex flex-col p-4 space-y-2">
+      <div class="text-center mb-8">
+        <div class="w-20 h-20 bg-white rounded-full mx-auto"></div>
+        <p class="mt-2 font-bold">ADMIN</p>
+        <p class="text-sm text-gray-200">Rol ADMINISTRADOR</p>
+      </div>
+
+      <a href="RegistroDeAlumnos.html" class="flex items-center px-4 py-2 rounded hover:bg-white hover:text-blue-900">
+        <i class="fas fa-user-graduate w-5 h-5 mr-2"></i> Registro de Alumnos
+      </a>
+
+      <a href="documentos.html" class="flex items-center px-4 py-2 rounded hover:bg-white hover:text-blue-900">
+        <i class="fas fa-file-alt w-5 h-5 mr-2"></i> Documentos
+      </a>
+
+      <a href="vehiculos.html" class="flex items-center px-4 py-2 rounded hover:bg-white hover:text-blue-900">
+        <i class="fas fa-car-side w-5 h-5 mr-2"></i> Vehículos
+      </a>
+
+      <a href="EscanearCodigo.html" class="flex items-center px-4 py-2 rounded hover:bg-white hover:text-blue-900">
+        <i class="fas fa-qrcode w-5 h-5 mr-2"></i> Escanear Pase
+      </a>
+
+      <a href="consultarPases.html" class="flex items-center px-4 py-2 rounded hover:bg-white hover:text-blue-900">
+        <i class="fas fa-id-card w-5 h-5 mr-2"></i> Consultar Pases
+      </a>
+
+      <a href="historial.html" class="flex items-center px-4 py-2 rounded hover:bg-white hover:text-blue-900">
+        <i class="fas fa-clock w-5 h-5 mr-2"></i> Historial
+      </a>
+    </aside>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <section class="flex-1 w-full overflow-x-auto px-4">
+      <h2 class="text-2xl font-bold text-gray-700 mb-4">
+        <i class="fas fa-file-alt w-6 h-6 mr-2"></i> Consultar Pases
+      </h2>
+      
+
+      <!-- Tabla de pases -->
+<div class="overflow-x-auto rounded-lg shadow">
+  <table id="tablaPasesVehiculares" class="min-w-full bg-white text-sm text-center border border-gray-200">
+    <thead class="bg-blue-900 text-white">
+      <tr>
+        <th class="px-6 py-3">ID</th>
+        <th class="px-6 py-3">Alumno</th>
+        <th class="px-6 py-3">Placa</th>
+        <th class="px-6 py-3">Vehículo</th>
+        <th class="px-6 py-3">Fecha</th>
+      </tr>
+    </thead>
+    <tbody class="text-gray-700" id="tablaPases">
+      <tr>
+        <td class="px-6 py-4">001</td>
+        <td class="px-6 py-4">Oscar Nuñez</td>
+        <td class="px-6 py-4">ABC-123</td>
+        <td class="px-6 py-4">Toyota Corolla</td>
+        <td class="px-6 py-4">2025-04-10</td>
+      </tr>
+      <tr class="bg-gray-50">
+        <td class="px-6 py-4">002</td>
+        <td class="px-6 py-4">Sergio Andre</td>
+        <td class="px-6 py-4">XYZ-456</td>
+        <td class="px-6 py-4">Honda Civic</td>
+        <td class="px-6 py-4">2025-04-11</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  <!-- Scripts al final -->
+  <script src="/Js/busqueda.js"></script>
+  <script src="/Js/menu-toggle.js"></script>
+  <script src="/Js/menuDropdown.js"></script>
+
+  <script>
+  $(document).ready(function () {
+    $('#tablaPasesVehiculares').DataTable({
+      language: {
+        url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+      }
+    });
+  });
+</script>
+</body>
+</html>

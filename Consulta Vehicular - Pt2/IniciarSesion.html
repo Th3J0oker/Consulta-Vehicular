@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Iniciar Sesión | Consulta Vehicular</title>
+
+  <link rel="shortcut icon" href="/assest/img/Escudo-ucv.webp" type="image/x-icon"/>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center" style="background-image: url('/assest/img/Frontis_LosOlivos.tif.webp');">
+
+  <div class="bg-white bg-opacity-90 p-8 rounded-2xl shadow-lg max-w-md w-full">
+    <h2 class="text-2xl font-bold text-center mb-6">Iniciar sesión</h2>
+
+    <form>
+      <!-- Correo -->
+      <div class="mb-4">
+        <label class="block text-gray-700">Correo electrónico</label>
+        <input type="email" class="w-full mt-1 p-2 border rounded-lg" required>
+      </div>
+
+      <!-- Contraseña -->
+      <div class="mb-4">
+        <label class="block text-gray-700">Contraseña</label>
+        <input type="password" class="w-full mt-1 p-2 border rounded-lg" required>
+      </div>
+
+      <!-- Botón -->
+      <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg mt-4">
+        Iniciar sesión
+      </button>
+
+      <!-- Texto inferior -->
+      <p class="text-center mt-4 text-gray-700">
+        ¿No tienes cuenta?
+        <a href="registrar.html" class="text-blue-600 hover:underline">Crea una</a>
+      </p>
+    </form>
+  </div>
+
+</body>
+</html>
